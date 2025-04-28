@@ -30,7 +30,9 @@ function App() {
   const fetchLyrics = useCallback(
     (query)=>{
       getLyrics(query)
-      .then(res => setFromFetch(res))
+      .then((res) => {
+        if(res.length !== 0) setFromFetch(res)
+      })
     },[]
   )
 
@@ -42,7 +44,8 @@ function App() {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    setQuery(search)
+    if (query===search.trim()) return
+    setQuery(search.trim())
   }
 
   const handleChange = (event) => {
