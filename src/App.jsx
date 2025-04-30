@@ -49,15 +49,7 @@ function App() {
       <Layout fetchLyrics={fetchLyrics}>
         <Box width={"55dvw"}>
           <Box>
-            <Typography variant='h4' component='h1'>LyricsTranslate Tool</Typography>
-            <Typography variant='h5' component='h2' gutterBottom>
-              {(fullTrackName.artistName && fullTrackName.trackName)
-                ? `${fullTrackName.artistName[0]} - ${fullTrackName.trackName}`
-                : "Cargando Titulo..."}
-            </Typography>
-          </Box>
-          <Box>
-            <LyricsTable lyricsMap={lyricsInfo} updateLyrics={updateLyrics}/>
+            <LyricsTable fullTrackName={fullTrackName} lyricsMap={lyricsInfo} updateLyrics={updateLyrics}/>
           </Box>
         </Box>
       </Layout>

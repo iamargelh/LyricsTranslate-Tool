@@ -1,11 +1,19 @@
-import { Input, Table, TableBody, TableCell, TableHead, TableRow, Typography, TextField } from "@mui/material";
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography, TextField, Box } from "@mui/material";
 import { useState } from "react";
 
 
-export function LyricsTable ({lyricsMap, updateLyrics}){
+export function LyricsTable ({lyricsMap, updateLyrics, fullTrackName}){
 
     return(
         <>
+            <Box>
+                <Typography variant='h4' component='h1'>LyricsTranslate Tool</Typography>
+                <Typography variant='h5' component='h2' gutterBottom>
+                {(fullTrackName.artistName && fullTrackName.trackName)
+                    ? `${fullTrackName.artistName[0]} - ${fullTrackName.trackName}`
+                    : "Cargando Titulo..."}
+                </Typography>
+            </Box>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -34,10 +42,18 @@ export function LyricsTable ({lyricsMap, updateLyrics}){
                 <TableBody>
                     {
                         (lyricsMap)
-                        ? [...lyricsMap].map(([key, content])=>{ // Tenga o no lyrics sync, este será un mapa
-                            return <LyricsRow key={key} content={content}/>
+                        ? [...lyricsMap].map(([key, content])=>{
+                            return <LyricsRow
+                                key={key}
+                                lyric={content.lyric}
+                                time_end={content.time_end}
+                                time_start={content.time_start}
+                                translation={content.translation}
+                                id={key}/>
                             })
                         : <></>
+
+
                     }
                 </TableBody>
             </Table>
@@ -46,29 +62,21 @@ export function LyricsTable ({lyricsMap, updateLyrics}){
     )
 }
 
-function LyricsRow({content}){
-    const [rowInfo,setRowInfo] = useState(content)
-
+function LyricsRow({time_start,time_end,lyric,translation,id}){
     return(
         <>
             <TableRow>
-                {
-                    Object.values(rowInfo).map((item,key)=>{
-                        if (key===4) return
-                        const align = (key%2 === 0) ? 'right' : 'left'
-                        const rows = (key===2 || key===3) ? 2 : 1
-                        return <LyricsCell value={item} align={align} rows={rows}/>
-                    }
-                    )
-                }
-
-            </TableRow>
+                <LyricsCell value={time_start} align={"right"} id={`${id}_start`}/>
+                <LyricsCell value={time_end} id={`${id}_end`}/>
+                <LyricsCell value={lyric} align={"right"} rows={2} id={`${id}_lyric`}/>
+                <LyricsCell value={translation} rows={2} id={`${id}_translate`}/>
+                </TableRow>
         </>
     )
 
 }
 
-function LyricsCell({value,align, rows}){
+function LyricsCell({value,align="left",rows=1,id}){
     return(
         <>
             <TableCell>
@@ -87,6 +95,7 @@ function LyricsCell({value,align, rows}){
                     fullWidth
                     minRows={rows}
                     value={value}
+                    key={id}
                 />
             </TableCell>
         </>

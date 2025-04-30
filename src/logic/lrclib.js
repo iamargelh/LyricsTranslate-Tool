@@ -20,6 +20,8 @@ const HEX_TIMECODES = [
 ];
 
 export function processLyricsMap(string){
+    console.time("PRROCESS")
+
     const lines = string.replaceAll('\n\n', '\n \n').split('\n')
     const lrcMap = new Map()
 
@@ -70,8 +72,9 @@ export function processLyricsMap(string){
         loopNumber++
     }
 
+    console.timeLog("PRROCESS");
     if (lrcMap.size===0) return
-    console.log({lrcMap})
+    // console.log({lrcMap})
     return lrcMap
 }
 
