@@ -3,7 +3,7 @@ import {
   useCallback
 } from 'react'
 import './App.css'
-import { getLyrics } from './services/lrclib.js'
+import { fetchLyrics as getLyrics } from './services/lrclib.js'
 import { getResultFromIndex } from './logic/lrclib.js'
 import {
   Box,
