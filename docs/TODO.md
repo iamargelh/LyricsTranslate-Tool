@@ -9,8 +9,8 @@
     - [x] All data into a json
 
 ## Logic
-- [ ] Fetch Lyrics (LRCLIB)
-- [ ] Fetch ISRC (MusicBrainz)
+- [x] Fetch Lyrics (LRCLIB)
+- [x] Fetch ISRC (MusicBrainz)
 - [ ] Fetch Streaming Site (Deezer)
 - [ ] Fetch Other Streaming Sites from a Streaming Site (Songlink/Odesli)
 - [ ] Map Responses
@@ -24,10 +24,10 @@
     - [ ] from SRT
 
 ## Components
-- [ ] App Bar
-    - [ ] Search Bar
+- [x] App Bar
+    - [x] Search Bar
 - [ ] Table
-    - [ ] Fetched Lyrics to Table
+    - [x] Fetched Lyrics to Table
     - [ ] Editable Fields
         - [ ] Lyrics & Translation
         - [ ] Timestamps

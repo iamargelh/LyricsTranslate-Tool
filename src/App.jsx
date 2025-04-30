@@ -26,8 +26,8 @@ function App() {
   }
 
   const setFromFetch = (json)=>{
-    const {artist_name, track_name, lyrics} = getResultFromIndex(json,0)
-    setFullTrackName({artistName:artist_name,trackName:track_name})
+    const {artistName, trackName, lyrics} = getResultFromIndex(json,0)
+    setFullTrackName({artistName,trackName})
     setLyricsInfo(lyrics)
   }
 
@@ -47,7 +47,7 @@ function App() {
   return (
     <>
       <Layout fetchLyrics={fetchLyrics}>
-        <Box>
+        <Box width={"55dvw"}>
           <Box>
             <Typography variant='h4' component='h1'>LyricsTranslate Tool</Typography>
             <Typography variant='h5' component='h2' gutterBottom>
@@ -57,9 +57,7 @@ function App() {
             </Typography>
           </Box>
           <Box>
-            <LyricsTable lyricsMap={lyricsInfo} updateLyrics={updateLyrics}>
-
-            </LyricsTable>
+            <LyricsTable lyricsMap={lyricsInfo} updateLyrics={updateLyrics}/>
           </Box>
         </Box>
       </Layout>

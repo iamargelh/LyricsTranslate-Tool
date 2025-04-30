@@ -2,7 +2,6 @@ export function getResultFromIndex(json,index){
     let item = json[index]
 
     const artistName = getArtistName(item.artistName)
-    console.log({artist_name: artistName})
     const trackName = item.trackName
     const lyrics = ()=>{
         if (item.syncedLyrics) {
@@ -12,7 +11,7 @@ export function getResultFromIndex(json,index){
         }
     }
 
-    return {artist_name: artistName,track_name: trackName,lyrics}
+    return {artistName,trackName,lyrics}
 }
 
 const HEX_TIMECODES = [

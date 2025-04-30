@@ -10,24 +10,24 @@ export function LyricsTable ({lyricsMap, updateLyrics}){
                 <TableHead>
                     <TableRow>
                         <TableCell width={"9%"} align="right">
-                            <Typography variant="h6" variantMapping={"p"}>
-                                Start
-                                </Typography>
+                            <Typography>
+                                <b>Start</b>
+                            </Typography>
                         </TableCell>
                         <TableCell width={"9%"}>
-                            <Typography variant="h6" variantMapping={"p"}>
-                                End
-                                </Typography>
+                            <Typography>
+                                <b>End</b>
+                            </Typography>
                         </TableCell>
                         <TableCell width={"30%"} align="right">
-                            <Typography variant="h6" variantMapping={"p"}>
-                                Lyric
-                                </Typography>
+                            <Typography>
+                                <b>Lyric</b>
+                            </Typography>
                         </TableCell>
                         <TableCell width={"30%"}>
-                            <Typography variant="h6" variantMapping={"p"}>
-                                Translation
-                                </Typography>
+                            <Typography>
+                                <b>Translation</b>
+                            </Typography>
                         </TableCell>
                     </TableRow>
                 </TableHead>
@@ -35,7 +35,6 @@ export function LyricsTable ({lyricsMap, updateLyrics}){
                     {
                         (lyricsMap)
                         ? [...lyricsMap].map(([key, content])=>{ // Tenga o no lyrics sync, este será un mapa
-                            console.log({content})
                             return <LyricsRow key={key} content={content}/>
                             })
                         : <></>
