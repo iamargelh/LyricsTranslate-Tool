@@ -1,8 +1,9 @@
 export function getResultFromIndex(json,index){
     let item = json[index]
 
-    const artist_name = item.artistName
-    const track_name = item.trackName
+    const artistName = getArtistName(item.artistName)
+    console.log({artist_name: artistName})
+    const trackName = item.trackName
     const lyrics = ()=>{
         if (item.syncedLyrics) {
             return processLyricsMap(item.syncedLyrics)
@@ -11,7 +12,7 @@ export function getResultFromIndex(json,index){
         }
     }
 
-    return {artist_name,track_name,lyrics}
+    return {artist_name: artistName,track_name: trackName,lyrics}
 }
 
 const HEX_TIMECODES = [
@@ -20,7 +21,7 @@ const HEX_TIMECODES = [
 ];
 
 export function processLyricsMap(string){
-    const lines = string.split("\n")
+    const lines = string.replaceAll('\n\n', '\n \n').split('\n')
     const lrcMap = new Map()
 
     let timeStampFound = false
@@ -31,14 +32,16 @@ export function processLyricsMap(string){
     let count = 0
 
     const saveLineItem = ({line, code, timecode})=>{
-        const lyric = line.replace(code,'').trim()
-        lrcMap.set(`lrc_${String(count).padStart(2,"0")}`,
+        const newLine = line.replace(code,'')
+        const lyric = newLine === ' ' ? newLine : newLine.trim()
+
+        lrcMap.set(`lrc_${String(count).padStart(2,'0')}`,
             {
                 time_start:timecode,
                 time_end:timecode,
                 lyric:lyric,
-                translation:"",
-                comment:""
+                translation:'',
+                comment:''
             })
         count++
     }
@@ -55,7 +58,7 @@ export function processLyricsMap(string){
                     break
                 }
                 if (hex_len===loopNumber) {
-                    saveLineItem({line, code, timecode:"00:00.00"})
+                    saveLineItem({line, code, timecode:'00:00.00'})
                 } else{
                     noResultCount++
                     console.log(`No result, attempt ${noResultCount}`)
@@ -71,4 +74,35 @@ export function processLyricsMap(string){
     if (lrcMap.size===0) return
     console.log({lrcMap})
     return lrcMap
+}
+
+function getArtistName(artistName) {
+    // Regular expressions to match different patterns in the artist name
+    const join_phrase = [
+        /\sfeat\.\s/i,      // " feat. "
+        /\sft\.\s/i,        // " ft. "
+        /\s&\s/,            // " & "
+        /\s,\s/,            // " , "
+    ]
+
+    let phrases = null;
+    for (const pattern of join_phrase) {
+        if (pattern.test(artistName)) {
+            phrases = pattern;
+            break;
+        }
+    }
+
+    const parts = artistName.split(phrases).map(part => part.trim());
+
+    const finalParts = [];
+    for (const part of parts) {
+        if (/\s&\s/.test(part)) {
+            finalParts.push(...part.split(/\s&\s/).map(p => p.trim()));
+        } else {
+            finalParts.push(part);
+        }
+    }
+
+    return finalParts.filter(part => part.length > 0);
 }

@@ -1,9 +1,16 @@
-import { useState, useEffect, useCallback } from 'react'
+import {
+  useState,
+  useCallback
+} from 'react'
 import './App.css'
 import { getLyrics } from './services/lrclib.js'
 import { getResultFromIndex } from './logic/lrclib.js'
-import { Typography } from '@mui/material'
+import {
+  Box,
+  Typography
+} from '@mui/material'
 import { Layout } from './components/Layout.jsx'
+import { LyricsTable } from './components/LyricsTable.jsx'
 
 
 function App() {
@@ -33,24 +40,28 @@ function App() {
     },[]
   )
 
+  const updateLyrics = ()=>{
+
+  }
+
   return (
     <>
       <Layout fetchLyrics={fetchLyrics}>
-        <Typography variant='h4' component='h1'>LyricsTranslate Tool</Typography>
-        <Typography variant='h5' component='h2' gutterBottom>
-          {(fullTrackName.artistName && fullTrackName.trackName)
-            ? `${fullTrackName.artistName} - ${fullTrackName.trackName}`
-            : "Cargando Titulo..."}
-        </Typography>
+        <Box>
+          <Box>
+            <Typography variant='h4' component='h1'>LyricsTranslate Tool</Typography>
+            <Typography variant='h5' component='h2' gutterBottom>
+              {(fullTrackName.artistName && fullTrackName.trackName)
+                ? `${fullTrackName.artistName[0]} - ${fullTrackName.trackName}`
+                : "Cargando Titulo..."}
+            </Typography>
+          </Box>
+          <Box>
+            <LyricsTable lyricsMap={lyricsInfo} updateLyrics={updateLyrics}>
 
-        {
-          (lyricsInfo)
-          ? [...lyricsInfo].map(([key, content])=>{ // Tenga o no lyrics sync, este será un mapa
-              return <Typography key={key} > {`${content.lyric}`} </Typography>
-            })
-          : <p>{"Cargando Lyrics..."}</p>
-        }
-
+            </LyricsTable>
+          </Box>
+        </Box>
       </Layout>
     </>
   )

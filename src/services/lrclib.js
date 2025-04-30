@@ -6,13 +6,11 @@ export async function getLyrics(query) {
     console.log({query})
     try{
         const result = await fetch(`${LRCLIB_ENDPOINT}${query}`)
-        if (result.ok){
-            const data = result.json()
-            return data
-        } else
-        {
-            throw new Error('Lyrics response not ok')
-        }
+
+        if (!result.ok) throw new Error('Lyrics response not ok')
+
+        const data = await result.json()
+        return data
 
     } catch {
         throw new Error('Error searching lyrics')
