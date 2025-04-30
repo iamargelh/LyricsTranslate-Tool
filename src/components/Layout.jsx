@@ -7,6 +7,8 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  TextField,
+  Button
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import MuiAppBar from "@mui/material/AppBar"
@@ -14,15 +16,27 @@ import MenuIcon from "@mui/icons-material/Menu"
 import SearchIcon from "@mui/icons-material/Search"
 import { useState, useEffect } from "react"
 import { AppDrawer } from "./AppDrawer"
+import { DeleteOutline } from "@mui/icons-material"
 
 
 const drawerWidth = 270
-export function Layout({ fetchLyrics, children }) {
+export function Layout({ discard, fetchLyrics, fullTrackName, children }) {
   // no sync: tristam different
   // sync: eden take care
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [search, setSearch] = useState("")
   const [query, setQuery] = useState("eden take care")
+  const [tittle,setTittle] = useState("Untitled")
+
+  useEffect(()=>{
+    const artistName = fullTrackName?.artistName?.[0] ?? false
+    if (!artistName) {
+      setTittle("Untitled")
+      return
+    }
+    const newTittle = `${artistName} - ${fullTrackName.trackName}`
+    setTittle(newTittle)
+  },[fullTrackName])
 
   useEffect(() => {
     fetchLyrics(query)
@@ -38,9 +52,16 @@ export function Layout({ fetchLyrics, children }) {
     const newSearch = event.target.value
     setSearch(newSearch)
   }
+  const handleTittleChange = (event)=>{
+    setTittle(event.target.value)
+  }
 
   const toggleDrawerOpen = () => {
     setDrawerOpen(!drawerOpen)
+  }
+
+  const handleDiscard = ()=>{
+    discard()
   }
 
   return (
@@ -63,17 +84,65 @@ export function Layout({ fetchLyrics, children }) {
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: "1fr auto 1fr",
+              gridTemplateColumns: "1fr 1fr 1fr auto",
               width: "100%",
             }}
           >
-            <Box />
-            <Box>
-              <form onSubmit={handleSubmit}>
+            <Box sx={{
+              // border:'dashed red',
+            }}/>
+            <Box sx={{
+              // border:'dashed red',
+              height:"100%"
+            }}>
+              <TextField
+                  InputProps={{
+                      inputProps: {
+                          style: {
+                              textAlign: "center",
+                              height:"1rem",
+                              fontSize:"1.8rem"
+                          },
+                      },
+                  }}
+                  inputRef={input => {
+                      if (input) {
+                          // Set the cursor position to the end of the text
+                          input.selectionStart = input.value.length;
+                          input.selectionEnd = input.value.length;
+                      }
+                  }}
+                  sx={
+                      {
+                          // marginTop:'-4px',
+                          // paddingBottom:'2.5px'
+
+                      }
+                  }
+                  fullWidth
+                  onChange={handleTittleChange}
+                  variant="outlined"
+                  value={tittle}
+                  key={"TRACKNAME"}
+                  margin="none"
+                  label="Tittle"
+                  color="primary"
+                  focused
+
+              />
+            </Box>
+            <Box sx={{
+              display:"flex",
+              // border:'dashed red',
+              height:"3rem",
+              alignItems:"center",
+              justifyContent:"center"
+            }}>
+              <form onSubmit={handleSubmit} alignItems>
                 <Input
                   onChange={handleChange}
                   value={search}
-                  placeholder="EDEN - take care"
+                  placeholder="tristam - ruthless"
                 ></Input>
                 <IconButton
                   size="medium"
@@ -85,7 +154,17 @@ export function Layout({ fetchLyrics, children }) {
                 </IconButton>
               </form>
             </Box>
-            <Box />
+            <Box sx={{
+              display:"flex",
+              // border:'dashed red',
+              height:"3rem",
+              alignItems:"center",
+              justifyContent:"center"
+            }}>
+              <Button variant="contained" color="error" startIcon={<DeleteOutline/>} onClick={handleDiscard}>
+                <b>Discard</b>
+              </Button>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>

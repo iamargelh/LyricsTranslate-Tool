@@ -21,6 +21,7 @@ function App() {
   })
 
   const resetApp = ()=>{
+    console.log("DISCARD")
     setFullTrackName({artistName:null,trackName:null})
     setLyricsInfo(null)
   }
@@ -29,10 +30,14 @@ function App() {
     const {artistName, trackName, lyrics} = getResultFromIndex(json,0)
     setFullTrackName({artistName,trackName})
     setLyricsInfo(lyrics)
+    console.timeEnd("Fetch")
+    console.log(lyrics)
+    console.time("RENDER")
   }
 
   const fetchLyrics = useCallback(
     (query)=>{
+      console.time("Fetch");
       getLyrics(query)
       .then((res) => {
         if(res.length !== 0) setFromFetch(res)
@@ -40,16 +45,25 @@ function App() {
     },[]
   )
 
-  const updateLyrics = ()=>{
-
-  }
+  const updateLyrics = useCallback((id, type, newValue)=>{
+    setLyricsInfo(
+      oldLyricsMap =>{
+        const newMap = new Map(oldLyricsMap)
+        const lineEdit = newMap.get(id)
+        lineEdit[type]=newValue
+        newMap.set(id,lineEdit)
+        console.log({newMap})
+        return newMap
+      }
+    )
+  }, [])
 
   return (
     <>
-      <Layout fetchLyrics={fetchLyrics}>
+      <Layout fetchLyrics={fetchLyrics} fullTrackName={fullTrackName} discard={resetApp}>
         <Box width={"55dvw"}>
           <Box>
-            <LyricsTable fullTrackName={fullTrackName} lyricsMap={lyricsInfo} updateLyrics={updateLyrics}/>
+            <LyricsTable fullTrackName={fullTrackName} lyricsMap={lyricsInfo} updateLyrics={updateLyrics} />
           </Box>
         </Box>
       </Layout>

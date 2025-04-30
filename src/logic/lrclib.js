@@ -3,13 +3,7 @@ export function getResultFromIndex(json,index){
 
     const artistName = getArtistName(item.artistName)
     const trackName = item.trackName
-    const lyrics = ()=>{
-        if (item.syncedLyrics) {
-            return processLyricsMap(item.syncedLyrics)
-        } else {
-            return processLyricsMap(item.plainLyrics)
-        }
-    }
+    const lyrics = getLyricsField(item)
 
     return {artistName,trackName,lyrics}
 }
@@ -19,9 +13,15 @@ const HEX_TIMECODES = [
     /\[(\d{2}:\d{2}:\d{2}\.\d{2,3})\]/
 ];
 
-export function processLyricsMap(string){
-    console.time("PRROCESS")
+function getLyricsField (item){
+    if (item.syncedLyrics) {
+        return processLyricsMap(item.syncedLyrics)
+    } else {
+        return processLyricsMap(item.plainLyrics)
+    }
+}
 
+export function processLyricsMap(string){
     const lines = string.replaceAll('\n\n', '\n \n').split('\n')
     const lrcMap = new Map()
 
@@ -72,7 +72,8 @@ export function processLyricsMap(string){
         loopNumber++
     }
 
-    console.timeLog("PRROCESS");
+
+
     if (lrcMap.size===0) return
     // console.log({lrcMap})
     return lrcMap
