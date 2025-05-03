@@ -12,7 +12,7 @@ export async function get_deezer_url ({artistName=null,trackName=null,isrc=null}
     }
 
     const coverImage = data?.album?.cover_xl ?? null
-    const linkDeezer = data?.link
+    const linkDeezer = data?.link ?? null
 
     return {linkDeezer,coverImage}
 }

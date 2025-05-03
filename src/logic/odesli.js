@@ -1,6 +1,7 @@
 import { fetch_odesli_urls } from '../services/odesli.js'
 
 export async function get_odesli_urls (url){
+    if (!url) return
     return await fetch_odesli_urls(url)
     .then(data=>{
         const urls = new Map([
