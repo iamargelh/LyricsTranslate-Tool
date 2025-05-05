@@ -6,9 +6,9 @@ export const MemoLyricsTable = memo(LyricsTable)
 export function LyricsTable ({lyricsMap, updateLyrics, fullTrackName}){
     return(
         <>
-            <Box>
+            {/* <Box>
                 <Typography variant='h4' component='h1'>LyricsTranslate Tool</Typography>
-            </Box>
+            </Box> */}
             <Table>
                 <TableHead>
                     <TableRow>
