@@ -2,7 +2,7 @@
 const LRCLIB_ENDPOINT = 'https://lrclib.net/api/search?q='
 
 export async function fetchLyrics(query) {
-    if (!query) return null;
+    if (!query) return null
     console.time("lrc req")
     console.log({query})
     try{

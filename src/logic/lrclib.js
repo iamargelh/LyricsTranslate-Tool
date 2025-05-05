@@ -11,7 +11,7 @@ export function getResultFromIndex(json,index){
 const HEX_TIMECODES = [
     /\[(\d{2}:\d{2}\.\d{2,3})\]/,
     /\[(\d{2}:\d{2}:\d{2}\.\d{2,3})\]/
-];
+]
 
 function getLyricsField (item){
     if (item.syncedLyrics) {
@@ -88,24 +88,24 @@ function getArtistName(artistName) {
         /\s,\s/,            // " , "
     ]
 
-    let phrases = null;
+    let phrases = null
     for (const pattern of join_phrase) {
         if (pattern.test(artistName)) {
-            phrases = pattern;
-            break;
+            phrases = pattern
+            break
         }
     }
 
-    const parts = artistName.split(phrases).map(part => part.trim());
+    const parts = artistName.split(phrases).map(part => part.trim())
 
-    const finalParts = [];
+    const finalParts = []
     for (const part of parts) {
         if (/\s&\s/.test(part)) {
-            finalParts.push(...part.split(/\s&\s/).map(p => p.trim()));
+            finalParts.push(...part.split(/\s&\s/).map(p => p.trim()))
         } else {
-            finalParts.push(part);
+            finalParts.push(part)
         }
     }
 
-    return finalParts.filter(part => part.length > 0);
+    return finalParts.filter(part => part.length > 0)
 }

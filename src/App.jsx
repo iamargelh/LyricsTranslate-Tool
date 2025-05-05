@@ -37,7 +37,7 @@ function App() {
 
   const fetchLyrics = useCallback(
     (query)=>{
-      console.time("Fetch");
+      console.time("Fetch")
       getLyrics(query)
       .then((res) => {
         if(res.length !== 0) setFromFetch(res)

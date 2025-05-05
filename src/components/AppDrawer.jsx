@@ -1,6 +1,6 @@
 import { IconButton, Box, Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material'
-import { styled } from '@mui/material/styles';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { styled } from '@mui/material/styles'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 
 
 export function AppDrawer ({drawerWidth=270,toggleDrawerOpen, drawerOpen, children }){
@@ -46,7 +46,7 @@ const DrawerFooter = styled('div')(({ theme }) => ({
 
     backgroundColor: theme.palette.background.paper,
     borderTop: `1px solid ${theme.palette.divider}`,
-}));
+}))
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -54,4 +54,4 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
-}));
+}))

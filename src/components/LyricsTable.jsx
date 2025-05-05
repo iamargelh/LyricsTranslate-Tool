@@ -1,5 +1,5 @@
-import { Table, TableBody, TableCell, TableHead, TableRow, Typography, TextField, Box } from "@mui/material";
-import { useEffect, memo, useMemo, useState } from "react";
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography, TextField, Box } from "@mui/material"
+import { useEffect, memo, useMemo, useState } from "react"
 
 export const MemoLyricsTable = memo(LyricsTable)
 
@@ -74,8 +74,8 @@ function LyricsRow({time_start,time_end,lyric,translation,id, updateLyrics}){
 }
 
 function LyricsCell({value,align="left", id, type, updateLyrics}){
-    const [editable, setEditable] = useState(false);
-    const [cellText, setCellText] = useState(value);
+    const [editable, setEditable] = useState(false)
+    const [cellText, setCellText] = useState(value)
     const [prevCellText, setPrevCellText] = useState(value)
 
     useEffect(()=>{
@@ -84,7 +84,7 @@ function LyricsCell({value,align="left", id, type, updateLyrics}){
         console.log("CELL CHANGE")
     },[value])
 
-    const cell_id = `${id}_${type}`;
+    const cell_id = `${id}_${type}`
 
     const toggleEditable = ()=>{
         if (type==="start"|| type==="end") return
@@ -137,8 +137,8 @@ function LyricsCell({value,align="left", id, type, updateLyrics}){
                             inputRef={input => {
                                 if (input) {
                                     // Set the cursor position to the end of the text
-                                    input.selectionStart = input.value.length;
-                                    input.selectionEnd = input.value.length;
+                                    input.selectionStart = input.value.length
+                                    input.selectionEnd = input.value.length
                                 }
                             }}
                             sx={
