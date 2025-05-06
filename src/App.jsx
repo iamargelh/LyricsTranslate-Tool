@@ -1,6 +1,7 @@
 import {
   useState,
-  useCallback
+  useCallback,
+  useRef
 } from 'react'
 import './App.css'
 import { fetchLyrics as getLyrics } from './services/lrclib.js'
@@ -19,6 +20,8 @@ function App() {
     artistName: null,
     trackName: null
   })
+  const [response,setResponse] = useState()
+  const abortControllerRef = useRef(null)
 
   const resetApp = ()=>{
     console.log("DISCARD")
@@ -26,24 +29,40 @@ function App() {
     setLyricsInfo(null)
   }
 
-  const setFromFetch = (json)=>{
-    const {artistName, trackName, lyrics} = getResultFromIndex(json,0)
+  const setFromFetch = (index)=>{
+    const {artistName, trackName, lyrics} = getResultFromIndex(response,index)
     setFullTrackName({artistName,trackName})
     setLyricsInfo(lyrics)
-    console.timeEnd("Fetch")
     console.log(lyrics)
     console.time("RENDER")
   }
 
-  const fetchLyrics = useCallback(
+  const fetchLyrics =
     (query)=>{
       console.time("Fetch")
-      getLyrics(query)
+
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+
+      const controller = new AbortController()
+      abortControllerRef.current = controller
+
+      getLyrics(query, { signal: controller.signal })
       .then((res) => {
-        if(res.length !== 0) setFromFetch(res)
+        setResponse(res)
       })
-    },[]
-  )
+      .catch((error) => {
+        if (error.name === "AbortError") {
+          console.log("Abort")
+        } else {
+          console.error(error)
+        }
+      })
+      .finally(
+        console.timeEnd("Fetch")
+      )
+    }
 
   const updateLyrics = useCallback((id, type, newValue)=>{
     setLyricsInfo(
@@ -60,7 +79,13 @@ function App() {
 
   return (
     <>
-      <Layout fetchLyrics={fetchLyrics} fullTrackName={fullTrackName} discard={resetApp}>
+      <Layout
+        fetchLyrics={fetchLyrics}
+        fullTrackName={fullTrackName}
+        discard={resetApp}
+        response={response}
+        setFromFetch={setFromFetch}
+      >
         <Box width={"55dvw"}>
           <Box>
             <LyricsTable fullTrackName={fullTrackName} lyricsMap={lyricsInfo} updateLyrics={updateLyrics} />

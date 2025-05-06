@@ -1,9 +1,9 @@
 import { Table, TableBody, TableCell, TableHead, TableRow, Typography, TextField, Box } from "@mui/material"
-import { useEffect, memo, useMemo, useState } from "react"
+import { useEffect, memo, useState } from "react"
 
 export const MemoLyricsTable = memo(LyricsTable)
 
-export function LyricsTable ({lyricsMap, updateLyrics, fullTrackName}){
+export function LyricsTable ({lyricsMap, updateLyrics}){
     return(
         <>
             {/* <Box>

@@ -13,11 +13,11 @@ import { BottomBar, TopBar } from './Layout/LayoutBar'
 
 const drawerWidth = 270
 
-export function Layout({ discard, fetchLyrics, fullTrackName, children }) {
+export function Layout({ discard, fetchLyrics, fullTrackName, children, response, setFromFetch }) {
   // no sync: tristam different
   // sync: eden take care
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [query, setQuery] = useState("eden take care")
+  const [query, setQuery] = useState("")
 
   useEffect(() => {
     fetchLyrics(query)
@@ -38,8 +38,9 @@ export function Layout({ discard, fetchLyrics, fullTrackName, children }) {
         drawerWidth={drawerWidth}
         query={query}
         setQuery={setQuery}
+        response={response}
+        setFromFetch={setFromFetch}
       />
-
       <AppDrawer
         drawerOpen={drawerOpen}
         toggleDrawerOpen={toggleDrawerOpen}

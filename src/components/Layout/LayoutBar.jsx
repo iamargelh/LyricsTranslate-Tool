@@ -1,16 +1,21 @@
-import { styled, Toolbar, Box, ToggleButtonGroup, ToggleButton, Button, IconButton, TextField, Input } from '@mui/material'
+import { styled, Toolbar, Box, ToggleButtonGroup, ToggleButton, Button, IconButton, TextField, Input, Autocomplete, Card, CardActionArea, CardContent, Typography, CircularProgress } from '@mui/material'
 import MuiAppBar from "@mui/material/AppBar"
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { Save, DeleteOutline } from "@mui/icons-material"
 import MenuIcon from "@mui/icons-material/Menu"
 import SearchIcon from "@mui/icons-material/Search"
+import { useDebounce } from '../../hooks/useDebounce'
 
-
-export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawerWidth,query,setQuery}){
+export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawerWidth,query,setQuery, response, setFromFetch}){
   const [tittle,setTittle] = useState("Untitled")
   const [search, setSearch] = useState("")
+  const [isSearchBlank,setIsSearchBlank] = useState(true)
+  const [searchFocus, setSearchFocus] = useState(false)
+  const [isSearching,setIsSearching] = useState(false)
+  const debouncedSearch = useDebounce(search,250)
 
   useEffect(()=>{
+    setIsSearching(false)
     const artistName = fullTrackName?.artistName?.[0] ?? false
     if (!artistName) {
       setTittle("Untitled")
@@ -20,25 +25,62 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
     setTittle(newTittle)
   },[fullTrackName])
 
+  useEffect(()=>{
+    setIsSearching(false)
+  },[response])
+
+  useEffect(()=>{
+    if (debouncedSearch.trim() && debouncedSearch.trim() !== query) {
+      setQuery(debouncedSearch.trim())
+    }
+  },[debouncedSearch,query])
+
 
   const handleTittleChange = (event)=>{
     setTittle(event.target.value)
   }
 
   const handleDiscard = ()=>{
+    setSearch("")
     discard()
   }
 
   const handleChange = (event) => {
     const newSearch = event.target.value
     setSearch(newSearch)
+    if (newSearch.trim() === "") {
+      console.log("MAL")
+      if(isSearchBlank) return
+      setIsSearchBlank(true)
+    }
+    else {
+      if(!isSearchBlank) return
+      console.log("BN")
+      setIsSearchBlank(false)
+    }
   }
-
 
   const handleSubmit = (event) => {
     event.preventDefault()
     if (query === search.trim()) return
+    setIsSearching(true)
     setQuery(search.trim())
+  }
+
+  const setIndex = (index) => {
+    setSearch("")
+    setFromFetch(index)
+  }
+
+  const onFocus= ()=>{
+    setSearchFocus(true)
+  }
+
+  const onBlur = ()=>{
+    setTimeout(() => {
+      if (!searchFocus) return
+      setSearchFocus(false)
+    }, 150)
   }
 
   return(
@@ -110,6 +152,7 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
           <Box sx={{
             display:"flex",
             // border:'dashed red',
+            flexDirection:'column',
             height:"3rem",
             alignItems:"center",
             justifyContent:"center"
@@ -119,6 +162,8 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
                 onChange={handleChange}
                 value={search}
                 placeholder="tristam - ruthless"
+                onFocus={onFocus}
+                onBlur={onBlur}
               ></Input>
               <IconButton
                 size="medium"
@@ -126,9 +171,28 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
                 color="inherit"
                 type="submit"
               >
-                <SearchIcon />
+                {
+                isSearching
+                ? <CircularProgress size={25}/>
+                : <SearchIcon />
+                }
               </IconButton>
             </form>
+            <Box
+            sx={{
+              position:"fixed",
+              top:"70px",
+              width:"20%",
+            }}
+            >
+              <Results
+                response={response}
+                setIndex={setIndex}
+                searchFocus={searchFocus}
+                setIsSearching={setIsSearching}
+                search={search}
+                isBlank={isSearchBlank}/>
+            </Box>
           </Box>
           <Box sx={{
             display:"flex",
@@ -147,11 +211,66 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
   )
 }
 
+
+export function Results ({response,setIndex,searchFocus,setIsSearching,isBlank}){
+  const [items,setItems] = useState()
+  const [focus,setFocus] = useState(searchFocus)
+
+  useEffect(()=>{
+    setItems(response)
+  },[response])
+
+  useEffect(()=>{
+    setFocus(searchFocus)
+  },[searchFocus])
+
+  return(
+    <>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(1, minmax(min(200px, 10%), 1fr))',
+          gap: 0.5,
+          opacity: focus ? 1 : 0,
+          transition: 'opacity 100ms ease-in-out',
+          pointerEvents: focus ? 'auto' : 'none',
+        }}
+      >
+        {
+          (items && !isBlank) &&
+          items.slice(0,5).map((item,index)=>{
+            const onClick = ()=>{
+              setIsSearching(true)
+              setFocus(false)
+              setIndex(index)
+            }
+            return (
+              <Card>
+                <CardActionArea
+                  onClick={onClick}
+                  disableRipple
+                >
+                  <CardContent>
+                    <Typography>
+                      {item.artistName+" - "+item.trackName}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            )
+          })
+        }
+      </Box>
+    </>
+  )
+}
+
 export function BottomBar ({drawerOpen, drawerWidth}){
     const [alignment, setAlignment] = useState('translation')
 
     const handleChangeSave = (event, newAlignment) => {
-        setAlignment(newAlignment)
+      if (!newAlignment) return
+      setAlignment(newAlignment)
     }
 
     return(
