@@ -1,7 +1,8 @@
 import {
   useState,
   useCallback,
-  useRef
+  useRef,
+  useEffect
 } from 'react'
 import './App.css'
 import { fetchLyrics as getLyrics } from './services/lrclib.js'
@@ -13,18 +14,41 @@ import {
 import { Layout } from './components/Layout.jsx'
 import { LyricsTable } from './components/LyricsTable.jsx'
 
-
 function App() {
-  const [lyricsInfo,setLyricsInfo] = useState() // MAP
-  const [fullTrackName,setFullTrackName] = useState({
-    artistName: null,
-    trackName: null
-  })
+  const [lyricsInfo,setLyricsInfo] = useState(
+    ()=>{
+      const lyricsFromStorage = window.localStorage.getItem("currentLyrics")
+      console.log({lyricsFromStorage})
+      if (lyricsFromStorage) return new Map(JSON.parse(lyricsFromStorage))
+      return []
+    }
+  )
+
+  const [fullTrackName,setFullTrackName] = useState(
+    ()=>{
+      const fullTrackNameFromStorage = window.localStorage.getItem("currentTrackName")
+      console.log({fullTrackNameFromStorage})
+      if (fullTrackNameFromStorage) return JSON.parse(fullTrackNameFromStorage)
+      return { artistName: null, trackName: null }
+    }
+  )
+
   const [response,setResponse] = useState()
   const abortControllerRef = useRef(null)
 
+  useEffect(()=>{
+    const currentLyrics = Array.from(lyricsInfo.entries())
+    window.localStorage.setItem("currentLyrics",JSON.stringify(currentLyrics))
+  },[lyricsInfo])
+
+  useEffect(()=>{
+    window.localStorage.setItem("currentTrackName",JSON.stringify(fullTrackName))
+  },[fullTrackName])
+
   const resetApp = ()=>{
     console.log("DISCARD")
+    window.localStorage.removeItem("currentLyrics")
+    window.localStorage.removeItem("currentTrackName")
     setFullTrackName({artistName:null,trackName:null})
     setLyricsInfo(null)
   }
