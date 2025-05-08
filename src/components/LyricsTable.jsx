@@ -36,7 +36,7 @@ export function LyricsTable ({lyricsMap, updateLyrics}){
                 </TableHead>
                 <TableBody>
                     {
-                        (lyricsMap)
+                        (lyricsMap.size!==0)
                         ? [...lyricsMap].map(([key, content])=>{
                             return <LyricsRow
                                 key={key}
@@ -53,7 +53,7 @@ export function LyricsTable ({lyricsMap, updateLyrics}){
                     {console.timeEnd("RENDER")}
                 </TableBody>
             </Table>
-            { (lyricsMap) ? <></> : <p>{"Waiting for Lyrics..."}</p> }
+            { (lyricsMap.size!==0) ? <></> : <p>{"Waiting for Lyrics..."}</p> }
         </>
     )
 }

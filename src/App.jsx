@@ -20,7 +20,7 @@ function App() {
       const lyricsFromStorage = window.localStorage.getItem("currentLyrics")
       console.log({lyricsFromStorage})
       if (lyricsFromStorage) return new Map(JSON.parse(lyricsFromStorage))
-      return []
+      return new Map()
     }
   )
 
@@ -50,7 +50,7 @@ function App() {
     window.localStorage.removeItem("currentLyrics")
     window.localStorage.removeItem("currentTrackName")
     setFullTrackName({artistName:null,trackName:null})
-    setLyricsInfo(null)
+    setLyricsInfo(new Map())
   }
 
   const setFromFetch = (index)=>{
