@@ -12,7 +12,7 @@ import {
   Typography
 } from '@mui/material'
 import { Layout } from './components/Layout.jsx'
-import { LyricsTable } from './components/LyricsTable.jsx'
+import { LyricsTable, LyricsRow, LyricsCell } from './components/LyricsTable.jsx'
 
 function App() {
   const [lyricsInfo,setLyricsInfo] = useState(
@@ -112,7 +112,56 @@ function App() {
       >
         <Box width={"55dvw"}>
           <Box>
-            <LyricsTable fullTrackName={fullTrackName} lyricsMap={lyricsInfo} updateLyrics={updateLyrics} />
+            <LyricsTable>
+              {
+                (lyricsInfo.size!==0) &&
+                [...lyricsInfo].map(([key, content])=>{
+                  return (
+                    <LyricsRow
+                      key={key}
+                      lyric={content.lyric}
+                      time_end={content.time_end}
+                      time_start={content.time_start}
+                      translation={content.translation}
+                      id={key}
+                      updateLyrics={updateLyrics}
+                    >
+                      <LyricsCell
+                        value={content.time_start}
+                        align={"right"}
+                        id={key}
+                        type={"start"}
+                        updateLyrics={updateLyrics}
+                      />
+                      <LyricsCell
+                        value={content.time_end}
+                        id={key}
+                        type={"end"}
+                        updateLyrics={updateLyrics}
+                      />
+                      <LyricsCell
+                        value={content.lyric}
+                        align={"right"}
+                        id={key} type={"lyric"}
+                        updateLyrics={updateLyrics}
+                      />
+                      <LyricsCell
+                        value={content.translation}
+                        id={key}
+                        type={"translation"}
+                        updateLyrics={updateLyrics}
+                      />
+                    </LyricsRow>
+                  )
+                })
+              }
+            </LyricsTable>
+            {
+              (lyricsInfo.size===0) &&
+              <p>
+                {"Waiting for Lyrics..."}
+              </p>
+            }
           </Box>
         </Box>
       </Layout>

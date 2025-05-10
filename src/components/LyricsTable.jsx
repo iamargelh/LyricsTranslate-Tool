@@ -3,12 +3,9 @@ import { useEffect, memo, useState } from "react"
 
 export const MemoLyricsTable = memo(LyricsTable)
 
-export function LyricsTable ({lyricsMap, updateLyrics}){
+export function LyricsTable ({children}){
     return(
         <>
-            {/* <Box>
-                <Typography variant='h4' component='h1'>LyricsTranslate Tool</Typography>
-            </Box> */}
             <Table>
                 <TableHead>
                     <TableRow>
@@ -35,45 +32,27 @@ export function LyricsTable ({lyricsMap, updateLyrics}){
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {
-                        (lyricsMap.size!==0)
-                        ? [...lyricsMap].map(([key, content])=>{
-                            return <LyricsRow
-                                key={key}
-                                lyric={content.lyric}
-                                time_end={content.time_end}
-                                time_start={content.time_start}
-                                translation={content.translation}
-                                id={key}
-                                updateLyrics={updateLyrics}/>
-                            })
-                        : <></>
-
-                    }
+                    { children }
                     {console.timeEnd("RENDER")}
                 </TableBody>
             </Table>
-            { (lyricsMap.size!==0) ? <></> : <p>{"Waiting for Lyrics..."}</p> }
         </>
     )
 }
 
 // export const MemoLyricsRow = memo(LyricsRow)
-function LyricsRow({time_start,time_end,lyric,translation,id, updateLyrics}){
+export function LyricsRow({children}){
 
     return(
         <>
             <TableRow>
-                <LyricsCell value={time_start} align={"right"} id={id} type={"start"} updateLyrics={updateLyrics}/>
-                <LyricsCell value={time_end} id={id} type={"end"} updateLyrics={updateLyrics}/>
-                <LyricsCell value={lyric} align={"right"} id={id} type={"lyric"} updateLyrics={updateLyrics}/>
-                <LyricsCell value={translation} id={id} type={"translation"} updateLyrics={updateLyrics}/>
+                {children}
             </TableRow>
         </>
     )
 }
 
-function LyricsCell({value,align="left", id, type, updateLyrics}){
+export function LyricsCell({value,align="left", id, type, updateLyrics}){
     const [editable, setEditable] = useState(false)
     const [cellText, setCellText] = useState(value)
     const [prevCellText, setPrevCellText] = useState(value)
