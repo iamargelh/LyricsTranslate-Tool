@@ -17,7 +17,7 @@ import { LyricsTable, LyricsRow, LyricsCell } from './components/LyricsTable.jsx
 function App() {
   const [lyricsInfo,setLyricsInfo] = useState(
     ()=>{
-      const lyricsFromStorage = window.localStorage.getItem("currentLyrics")
+      const lyricsFromStorage = window.localStorage.getItem('currentLyrics')
       console.log({lyricsFromStorage})
       if (lyricsFromStorage) return new Map(JSON.parse(lyricsFromStorage))
       return new Map()
@@ -26,7 +26,7 @@ function App() {
 
   const [fullTrackName,setFullTrackName] = useState(
     ()=>{
-      const fullTrackNameFromStorage = window.localStorage.getItem("currentTrackName")
+      const fullTrackNameFromStorage = window.localStorage.getItem('currentTrackName')
       console.log({fullTrackNameFromStorage})
       if (fullTrackNameFromStorage) return JSON.parse(fullTrackNameFromStorage)
       return { artistName: null, trackName: null }
@@ -38,17 +38,17 @@ function App() {
 
   useEffect(()=>{
     const currentLyrics = Array.from(lyricsInfo.entries())
-    window.localStorage.setItem("currentLyrics",JSON.stringify(currentLyrics))
+    window.localStorage.setItem('currentLyrics',JSON.stringify(currentLyrics))
   },[lyricsInfo])
 
   useEffect(()=>{
-    window.localStorage.setItem("currentTrackName",JSON.stringify(fullTrackName))
+    window.localStorage.setItem('currentTrackName',JSON.stringify(fullTrackName))
   },[fullTrackName])
 
   const resetApp = ()=>{
-    console.log("DISCARD")
-    window.localStorage.removeItem("currentLyrics")
-    window.localStorage.removeItem("currentTrackName")
+    console.log('DISCARD')
+    window.localStorage.removeItem('currentLyrics')
+    window.localStorage.removeItem('currentTrackName')
     setFullTrackName({artistName:null,trackName:null})
     setLyricsInfo(new Map())
   }
@@ -58,12 +58,12 @@ function App() {
     setFullTrackName({artistName,trackName})
     setLyricsInfo(lyrics)
     console.log(lyrics)
-    console.time("RENDER")
+    console.time('RENDER')
   }
 
   const fetchLyrics =
     (query)=>{
-      console.time("Fetch")
+      console.time('Fetch')
 
       if (abortControllerRef.current) {
         abortControllerRef.current.abort()
@@ -77,14 +77,14 @@ function App() {
         setResponse(res)
       })
       .catch((error) => {
-        if (error.name === "AbortError") {
-          console.log("Abort")
+        if (error.name === 'AbortError') {
+          console.log('Abort')
         } else {
           console.error(error)
         }
       })
       .finally(
-        console.timeEnd("Fetch")
+        console.timeEnd('Fetch')
       )
     }
 
@@ -110,7 +110,7 @@ function App() {
         response={response}
         setFromFetch={setFromFetch}
       >
-        <Box width={"55dvw"}>
+        <Box width={'55dvw'}>
           <Box>
             <LyricsTable>
               {
@@ -120,27 +120,27 @@ function App() {
                     <LyricsRow>
                       <LyricsCell
                         value={content.time_start}
-                        align={"right"}
+                        align={'right'}
                         id={key}
-                        type={"start"}
+                        type={'start'}
                         updateLyrics={updateLyrics}
                       />
                       <LyricsCell
                         value={content.time_end}
                         id={key}
-                        type={"end"}
+                        type={'end'}
                         updateLyrics={updateLyrics}
                       />
                       <LyricsCell
                         value={content.lyric}
-                        align={"right"}
-                        id={key} type={"lyric"}
+                        align={'right'}
+                        id={key} type={'lyric'}
                         updateLyrics={updateLyrics}
                       />
                       <LyricsCell
                         value={content.translation}
                         id={key}
-                        type={"translation"}
+                        type={'translation'}
                         updateLyrics={updateLyrics}
                       />
                     </LyricsRow>
@@ -151,7 +151,7 @@ function App() {
             {
               (lyricsInfo.size===0) &&
               <p>
-                {"Waiting for Lyrics..."}
+                {'Waiting for Lyrics...'}
               </p>
             }
           </Box>

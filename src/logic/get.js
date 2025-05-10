@@ -9,18 +9,18 @@ export async function get(artistName,trackName){
     const streaming_sites = await get_odesli_urls(linkDeezer)
 
     const info_map = new Map([
-        ["track_name", trackName ?? null],
-        ["artist_name", artistName ?? null],
-        ["isrcs", isrc ?? null],
-        ["cover", coverImage ?? null],
-        ["streaming_sites", streaming_sites ?? null],
+        ['track_name', trackName ?? null],
+        ['artist_name', artistName ?? null],
+        ['isrcs', isrc ?? null],
+        ['cover', coverImage ?? null],
+        ['streaming_sites', streaming_sites ?? null],
     ])
 
     return (info_map)
 }
 
 
-get("EDEN","take care")
+get('EDEN','take care')
 .then(
     result =>{
         console.log({result})

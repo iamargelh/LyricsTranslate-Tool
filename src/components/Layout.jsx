@@ -3,11 +3,11 @@ import {
   ListItem,
   ListItemButton,
   ListItemText
-} from "@mui/material"
-import { styled } from "@mui/material/styles"
-import MuiAppBar from "@mui/material/AppBar"
-import { useState, useEffect } from "react"
-import { AppDrawer } from "./AppDrawer"
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import MuiAppBar from '@mui/material/AppBar'
+import { useState, useEffect } from 'react'
+import { AppDrawer } from './AppDrawer'
 import { BottomBar, TopBar } from './Layout/LayoutBar'
 
 
@@ -17,7 +17,7 @@ export function Layout({ discard, fetchLyrics, fullTrackName, children, response
   // no sync: tristam different
   // sync: eden take care
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [query, setQuery] = useState("")
+  const [query, setQuery] = useState('')
 
   useEffect(() => {
     fetchLyrics(query)
@@ -47,7 +47,7 @@ export function Layout({ discard, fetchLyrics, fullTrackName, children, response
         drawerWidth={drawerWidth}
       >
         <List>
-          <ListItem key="wipItem" disablePadding>
+          <ListItem key='wipItem' disablePadding>
             <ListItemButton>
               <ListItemText primary={`Work in Progress`} />
             </ListItemButton>
@@ -67,12 +67,12 @@ export function Layout({ discard, fetchLyrics, fullTrackName, children, response
 }
 
 // from https://mui.com/material-ui/react-drawer/#persistent-drawer, still learning it.
-const MainContent = styled("main", {
-  shouldForwardProp: (prop) => prop !== "drawerOpen",
+const MainContent = styled('main', {
+  shouldForwardProp: (prop) => prop !== 'drawerOpen',
 })(({ theme }) => ({
   flexGrow: 1,
   padding: theme.spacing(6), // padding should be 3
-  transition: theme.transitions.create("margin", {
+  transition: theme.transitions.create('margin', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
@@ -81,7 +81,7 @@ const MainContent = styled("main", {
     {
       props: ({ drawerOpen }) => drawerOpen,
       style: {
-        transition: theme.transitions.create("margin", {
+        transition: theme.transitions.create('margin', {
           easing: theme.transitions.easing.easeOut,
           duration: theme.transitions.duration.enteringScreen,
         }),
@@ -92,9 +92,9 @@ const MainContent = styled("main", {
 }))
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "drawerOpen",
+  shouldForwardProp: (prop) => prop !== 'drawerOpen',
 })(({ theme }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
+  transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
@@ -104,7 +104,7 @@ const AppBar = styled(MuiAppBar, {
       style: {
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: `${drawerWidth}px`,
-        transition: theme.transitions.create(["margin", "width"], {
+        transition: theme.transitions.create(['margin', 'width'], {
           easing: theme.transitions.easing.easeOut,
           duration: theme.transitions.duration.enteringScreen,
         }),

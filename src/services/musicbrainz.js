@@ -1,9 +1,9 @@
 const MUSICBRAINZ_TRACK_ENDPOINT = (artistName,trackName)=>{
-    return `https://musicbrainz.org/ws/2/recording/?query=artist:"${artistName}" AND recording:"${trackName}"&fmt=json&limit=1`
+    return `https://musicbrainz.org/ws/2/recording/?query=artist:'${artistName}' AND recording:'${trackName}'&fmt=json&limit=1`
 }
 
 const MUSICBRAINZ_ARTIST_ENDPOINT = (artistId)=>{
-    return `https://musicbrainz.org/ws/2/artist/${artistId}?inc=url-rels&fmt=json"`
+    return `https://musicbrainz.org/ws/2/artist/${artistId}?inc=url-rels&fmt=json'`
 }
 
 export async function musicbrainz(artistName,trackName){

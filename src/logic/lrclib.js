@@ -82,10 +82,10 @@ export function processLyricsMap(string){
 function getArtistName(artistName) {
     // Regular expressions to match different patterns in the artist name
     const join_phrase = [
-        /\sfeat\.\s/i,      // " feat. "
-        /\sft\.\s/i,        // " ft. "
-        /\s&\s/,            // " & "
-        /\s,\s/,            // " , "
+        /\sfeat\.\s/i,      // ' feat. '
+        /\sft\.\s/i,        // ' ft. '
+        /\s&\s/,            // ' & '
+        /\s,\s/,            // ' , '
     ]
 
     let phrases = null

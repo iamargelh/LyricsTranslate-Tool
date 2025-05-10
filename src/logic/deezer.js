@@ -17,13 +17,13 @@ export async function get_deezer_url ({artistName=null,trackName=null,isrc=null}
     return {linkDeezer,coverImage}
 }
 
-// get_deezer_url({isrc:"USUM71710301"})
+// get_deezer_url({isrc:'USUM71710301'})
 // .then(({linkDeezer,coverImage})=>{
 //     console.log({linkDeezer})
 //     console.log({coverImage})
 // })
 
-// get_deezer_url({trackName:"take care",artistName:"EDEN"})
+// get_deezer_url({trackName:'take care',artistName:'EDEN'})
 // .then(({linkDeezer,coverImage})=>{
 //     console.log({linkDeezer})
 //     console.log({coverImage})

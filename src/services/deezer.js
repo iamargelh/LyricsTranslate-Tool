@@ -17,7 +17,7 @@ export async function fetch_deezer_url_from_isrc(isrc) {
 }
 
 const DEEZER_NAME_ENDPOINT = (artistName,trackName)=>{
-    return `https://api.deezer.com/search?q=artist:"${artistName}"track:"${trackName}"&limit=1`
+    return `https://api.deezer.com/search?q=artist:'${artistName}'track:'${trackName}'&limit=1`
 }
 
 export async function fetch_deezer_url_from_name(artistName, trackName) {
@@ -37,5 +37,5 @@ export async function fetch_deezer_url_from_name(artistName, trackName) {
     }
 }
 
-// fetch_deezer_url_from_name("EDEN","take care")
-// fetch_deezer_url_from_isrc("USUM71710301")
+// fetch_deezer_url_from_name('EDEN','take care')
+// fetch_deezer_url_from_isrc('USUM71710301')

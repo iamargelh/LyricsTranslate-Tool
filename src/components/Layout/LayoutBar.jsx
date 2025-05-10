@@ -1,14 +1,14 @@
 import { styled, Toolbar, Box, ToggleButtonGroup, ToggleButton, Button, IconButton, TextField, Input, Autocomplete, Card, CardActionArea, CardContent, Typography, CircularProgress } from '@mui/material'
-import MuiAppBar from "@mui/material/AppBar"
+import MuiAppBar from '@mui/material/AppBar'
 import { useEffect, useState } from 'react'
-import { Save, DeleteOutline } from "@mui/icons-material"
-import MenuIcon from "@mui/icons-material/Menu"
-import SearchIcon from "@mui/icons-material/Search"
+import { Save, DeleteOutline } from '@mui/icons-material'
+import MenuIcon from '@mui/icons-material/Menu'
+import SearchIcon from '@mui/icons-material/Search'
 import { useDebounce } from '../../hooks/useDebounce'
 
 export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawerWidth,query,setQuery, response, setFromFetch}){
-  const [tittle,setTittle] = useState("Untitled")
-  const [search, setSearch] = useState("")
+  const [tittle,setTittle] = useState('Untitled')
+  const [search, setSearch] = useState('')
   const [isSearchBlank,setIsSearchBlank] = useState(true)
   const [searchFocus, setSearchFocus] = useState(false)
   const [isSearching,setIsSearching] = useState(false)
@@ -18,7 +18,7 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
     setIsSearching(false)
     const artistName = fullTrackName?.artistName?.[0] ?? false
     if (!artistName) {
-      setTittle("Untitled")
+      setTittle('Untitled')
       return
     }
     const newTittle = `${artistName} - ${fullTrackName.trackName}`
@@ -41,21 +41,21 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
   }
 
   const handleDiscard = ()=>{
-    setSearch("")
+    setSearch('')
     discard()
   }
 
   const handleChange = (event) => {
     const newSearch = event.target.value
     setSearch(newSearch)
-    if (newSearch.trim() === "") {
-      console.log("MAL")
+    if (newSearch.trim() === '') {
+      console.log('MAL')
       if(isSearchBlank) return
       setIsSearchBlank(true)
     }
     else {
       if(!isSearchBlank) return
-      console.log("BN")
+      console.log('BN')
       setIsSearchBlank(false)
     }
   }
@@ -68,7 +68,7 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
   }
 
   const setIndex = (index) => {
-    setSearch("")
+    setSearch('')
     setFromFetch(index)
   }
 
@@ -84,16 +84,16 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
   }
 
   return(
-    <AppBar position="fixed" drawerOpen={drawerOpen} drawerWidth={drawerWidth}>
+    <AppBar position='fixed' drawerOpen={drawerOpen} drawerWidth={drawerWidth}>
       <Toolbar>
         <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
+          size='large'
+          edge='start'
+          color='inherit'
           onClick={toggleDrawerOpen}
           sx={[
             { mr: 2 },
-            drawerOpen && { visibility: "hidden" }, //  display: 'none'  causes popping
+            drawerOpen && { visibility: 'hidden' }, //  display: 'none'  causes popping
           ]}
         >
           <MenuIcon />
@@ -101,9 +101,9 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
         </IconButton>
         <Box
           sx={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr auto",
-            width: "100%",
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr 1fr auto',
+            width: '100%',
           }}
         >
           <Box sx={{
@@ -111,15 +111,15 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
           }}/>
           <Box sx={{
             // border:'dashed red',
-            height:"100%"
+            height:'100%'
           }}>
             <TextField
                 InputProps={{
                     inputProps: {
                         style: {
-                            textAlign: "center",
-                            height:"1rem",
-                            fontSize:"1.8rem"
+                            textAlign: 'center',
+                            height:'1rem',
+                            fontSize:'1.8rem'
                         },
                     },
                 }}
@@ -139,37 +139,37 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
                 }
                 fullWidth
                 onChange={handleTittleChange}
-                variant="outlined"
+                variant='outlined'
                 value={tittle}
-                key={"TRACKNAME"}
-                margin="none"
-                label="Tittle"
-                color="primary"
+                key={'TRACKNAME'}
+                margin='none'
+                label='Tittle'
+                color='primary'
                 focused
 
             />
           </Box>
           <Box sx={{
-            display:"flex",
+            display:'flex',
             // border:'dashed red',
             flexDirection:'column',
-            height:"3rem",
-            alignItems:"center",
-            justifyContent:"center"
+            height:'3rem',
+            alignItems:'center',
+            justifyContent:'center'
           }}>
             <form onSubmit={handleSubmit} alignItems>
               <Input
                 onChange={handleChange}
                 value={search}
-                placeholder="tristam - ruthless"
+                placeholder='tristam - ruthless'
                 onFocus={onFocus}
                 onBlur={onBlur}
               ></Input>
               <IconButton
-                size="medium"
-                edge="start"
-                color="inherit"
-                type="submit"
+                size='medium'
+                edge='start'
+                color='inherit'
+                type='submit'
               >
                 {
                 isSearching
@@ -180,9 +180,9 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
             </form>
             <Box
             sx={{
-              position:"fixed",
-              top:"70px",
-              width:"20%",
+              position:'fixed',
+              top:'70px',
+              width:'20%',
             }}
             >
               <Results
@@ -195,13 +195,13 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
             </Box>
           </Box>
           <Box sx={{
-            display:"flex",
+            display:'flex',
             // border:'dashed red',
-            height:"3rem",
-            alignItems:"center",
-            justifyContent:"center"
+            height:'3rem',
+            alignItems:'center',
+            justifyContent:'center'
           }}>
-            <Button variant="contained" color="error" startIcon={<DeleteOutline/>} onClick={handleDiscard}>
+            <Button variant='contained' color='error' startIcon={<DeleteOutline/>} onClick={handleDiscard}>
               <b>Discard</b>
             </Button>
           </Box>
@@ -252,7 +252,7 @@ export function Results ({response,setIndex,searchFocus,setIsSearching,isBlank})
                 >
                   <CardContent>
                     <Typography>
-                      {item.artistName+" - "+item.trackName}
+                      {item.artistName+' - '+item.trackName}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -274,13 +274,13 @@ export function BottomBar ({drawerOpen, drawerWidth}){
     }
 
     return(
-        <AppBar position="fixed" drawerWidth={drawerWidth} drawerOpen={drawerOpen} sx={{ top: 'auto', bottom: 0 }}>
+        <AppBar position='fixed' drawerWidth={drawerWidth} drawerOpen={drawerOpen} sx={{ top: 'auto', bottom: 0 }}>
             <Toolbar>
               <Box
                   sx={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr 1fr auto",
-                  width: "100%",
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr 1fr auto',
+                  width: '100%',
                   }}
               >
                   <Box sx={{
@@ -289,44 +289,44 @@ export function BottomBar ({drawerOpen, drawerWidth}){
 
                   <Box sx={{
                   // border:'dashed red',
-                  height:"100%"
+                  height:'100%'
                   }}>
 
                       <Box sx={{
                     // border:'dashed red',
-                    height:"100%"
+                    height:'100%'
                     }}/>
                   </Box>
                   <Box sx={{
-                  display:"flex",
+                  display:'flex',
                   // border:'dashed red',
-                  height:"3rem",
-                  alignItems:"center",
-                  justifyContent:"center"
+                  height:'3rem',
+                  alignItems:'center',
+                  justifyContent:'center'
                   }}>
                   </Box>
                   <Box sx={{
-                  display:"flex",
+                  display:'flex',
                   // border:'dashed red',
-                  height:"3rem",
-                  alignItems:"center",
-                  justifyContent:"center",
+                  height:'3rem',
+                  alignItems:'center',
+                  justifyContent:'center',
                   }}>
                   <ToggleButtonGroup
-                      color="primary"
+                      color='primary'
                       value={alignment}
                       exclusive
                       onChange={handleChangeSave}
-                      aria-label="Platform"
+                      aria-label='Platform'
                       sx={{
-                      height:"75%",
-                      paddingRight:"10px"
+                      height:'75%',
+                      paddingRight:'10px'
                       }}
                   >
-                      <ToggleButton value="lyrics">Lyrics</ToggleButton>
-                      <ToggleButton value="translation">Translation</ToggleButton>
+                      <ToggleButton value='lyrics'>Lyrics</ToggleButton>
+                      <ToggleButton value='translation'>Translation</ToggleButton>
                   </ToggleButtonGroup>
-                  <Button variant="contained" color="primary" startIcon={<Save/>} onClick={()=>{}}>
+                  <Button variant='contained' color='primary' startIcon={<Save/>} onClick={()=>{}}>
                       <b>Save</b>
                   </Button>
                   </Box>
@@ -337,9 +337,9 @@ export function BottomBar ({drawerOpen, drawerWidth}){
 }
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "drawerOpen" && prop !== "drawerWidth",
+  shouldForwardProp: (prop) => prop !== 'drawerOpen' && prop !== 'drawerWidth',
 })(({ theme, drawerWidth }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
+  transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
@@ -349,7 +349,7 @@ const AppBar = styled(MuiAppBar, {
       style: {
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: `${drawerWidth}px`,
-        transition: theme.transitions.create(["margin", "width"], {
+        transition: theme.transitions.create(['margin', 'width'], {
           easing: theme.transitions.easing.easeOut,
           duration: theme.transitions.duration.enteringScreen,
         }),

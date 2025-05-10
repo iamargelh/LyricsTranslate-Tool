@@ -1,5 +1,5 @@
-import { Table, TableBody, TableCell, TableHead, TableRow, Typography, TextField, Box } from "@mui/material"
-import { useEffect, memo, useState } from "react"
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography, TextField, Box } from '@mui/material'
+import { useEffect, memo, useState } from 'react'
 
 export const MemoLyricsTable = memo(LyricsTable)
 
@@ -9,22 +9,22 @@ export function LyricsTable ({children}){
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell width={"9%"} align="right">
+                        <TableCell width={'9%'} align='right'>
                             <Typography>
                                 <b>Start</b>
                             </Typography>
                         </TableCell>
-                        <TableCell width={"9%"}>
+                        <TableCell width={'9%'}>
                             <Typography>
                                 <b>End</b>
                             </Typography>
                         </TableCell>
-                        <TableCell width={"30%"} align="right">
+                        <TableCell width={'30%'} align='right'>
                             <Typography>
                                 <b>Lyric</b>
                             </Typography>
                         </TableCell>
-                        <TableCell width={"30%"}>
+                        <TableCell width={'30%'}>
                             <Typography>
                                 <b>Translation</b>
                             </Typography>
@@ -33,7 +33,7 @@ export function LyricsTable ({children}){
                 </TableHead>
                 <TableBody>
                     { children }
-                    {console.timeEnd("RENDER")}
+                    {console.timeEnd('RENDER')}
                 </TableBody>
             </Table>
         </>
@@ -52,7 +52,7 @@ export function LyricsRow({children}){
     )
 }
 
-export function LyricsCell({value,align="left", id, type, updateLyrics}){
+export function LyricsCell({value,align='left', id, type, updateLyrics}){
     const [editable, setEditable] = useState(false)
     const [cellText, setCellText] = useState(value)
     const [prevCellText, setPrevCellText] = useState(value)
@@ -60,16 +60,16 @@ export function LyricsCell({value,align="left", id, type, updateLyrics}){
     useEffect(()=>{
         setCellText(value)
         setPrevCellText(value)
-        console.log("CELL CHANGE")
+        console.log('CELL CHANGE')
     },[value])
 
     const cell_id = `${id}_${type}`
 
 
-    const cursor = (type==="start" || type==="end") ? 'auto' : 'pointer'
+    const cursor = (type==='start' || type==='end') ? 'auto' : 'pointer'
 
     const toggleEditable = ()=>{
-        if (type==="start"|| type==="end") return
+        if (type==='start'|| type==='end') return
         setEditable(true)
     }
 
@@ -90,7 +90,7 @@ export function LyricsCell({value,align="left", id, type, updateLyrics}){
     return(
         <>
             <TableCell
-                className={`lrc-cell ${(editable) ? "lrc-cell-editable" : ""}`}
+                className={`lrc-cell ${(editable) ? 'lrc-cell-editable' : ''}`}
                 sx={
                     {
                         cursor:cursor,
@@ -103,9 +103,9 @@ export function LyricsCell({value,align="left", id, type, updateLyrics}){
                 <Box
                     sx={{
                         display:'flex',
-                        // border:"dashed red",
+                        // border:'dashed red',
                         justifyContent:`${align}`,
-                        alignItems:"center"
+                        alignItems:'center'
                     }}>
                     {
                         editable
@@ -134,12 +134,12 @@ export function LyricsCell({value,align="left", id, type, updateLyrics}){
                             autoFocus
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            variant="standard"
+                            variant='standard'
                             multiline
                             fullWidth
                             value={cellText}
                             key={cell_id}
-                            margin="none"
+                            margin='none'
                         />
                         :
 
@@ -151,7 +151,7 @@ export function LyricsCell({value,align="left", id, type, updateLyrics}){
                                     {
                                         userSelect:'none',
                                         height: '100%',
-                                        paddingTop: "0.4rem"
+                                        paddingTop: '0.4rem'
                                     }
                                 }
                             >

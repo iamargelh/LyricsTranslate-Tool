@@ -16,8 +16,8 @@ export function AppDrawer ({drawerWidth=270,toggleDrawerOpen, drawerOpen, childr
                     boxSizing: 'border-box',
                 },
                 }}
-                variant="persistent"
-                anchor="left"
+                variant='persistent'
+                anchor='left'
                 open={drawerOpen}
             >
                 <DrawerHeader>
