@@ -117,15 +117,7 @@ function App() {
                 (lyricsInfo.size!==0) &&
                 [...lyricsInfo].map(([key, content])=>{
                   return (
-                    <LyricsRow
-                      key={key}
-                      lyric={content.lyric}
-                      time_end={content.time_end}
-                      time_start={content.time_start}
-                      translation={content.translation}
-                      id={key}
-                      updateLyrics={updateLyrics}
-                    >
+                    <LyricsRow>
                       <LyricsCell
                         value={content.time_start}
                         align={"right"}

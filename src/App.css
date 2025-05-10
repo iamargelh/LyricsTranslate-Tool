@@ -4,3 +4,20 @@
   padding: 2rem;
   text-align: center;
 }
+
+.lrc-cell {
+  transition-timing-function: ease-out;
+  transition: 0.2s;
+}
+
+.lrc-cell:hover {
+  transition-timing-function: ease-in;
+  transition: 0.2s;
+  background-color: #1768aa5b;
+}
+
+.lrc-cell-editable {
+  transition-timing-function: ease-in;
+  transition: 0.2s;
+  background-color: #1768aa84;
+}

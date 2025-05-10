@@ -65,6 +65,9 @@ export function LyricsCell({value,align="left", id, type, updateLyrics}){
 
     const cell_id = `${id}_${type}`
 
+
+    const cursor = (type==="start" || type==="end") ? 'auto' : 'pointer'
+
     const toggleEditable = ()=>{
         if (type==="start"|| type==="end") return
         setEditable(true)
@@ -87,14 +90,16 @@ export function LyricsCell({value,align="left", id, type, updateLyrics}){
     return(
         <>
             <TableCell
-            sx={
-                {
-                    cursor:'pointer',
-                    height:'2rem',
-                    // border:'dashed red'
+                className={`lrc-cell ${(editable) ? "lrc-cell-editable" : ""}`}
+                sx={
+                    {
+                        cursor:cursor,
+                        height:'2rem',
+                        // border:'dashed red'
+                    }
                 }
-            }
-            onClick={toggleEditable}>
+                onClick={toggleEditable}
+            >
                 <Box
                     sx={{
                         display:'flex',
@@ -122,8 +127,8 @@ export function LyricsCell({value,align="left", id, type, updateLyrics}){
                             }}
                             sx={
                                 {
-                                    marginTop:'-4px',
-                                    paddingBottom:'2.5px'
+                                    marginTop:'0.1rem',
+                                    paddingBottom:'0rem'
                                 }
                             }
                             autoFocus
@@ -146,6 +151,7 @@ export function LyricsCell({value,align="left", id, type, updateLyrics}){
                                     {
                                         userSelect:'none',
                                         height: '100%',
+                                        paddingTop: "0.4rem"
                                     }
                                 }
                             >
