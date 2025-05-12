@@ -15,21 +15,53 @@ import { Layout } from './components/Layout.jsx'
 import { LyricsTable, LyricsRow, LyricsCell } from './components/LyricsTable.jsx'
 
 function App() {
+  const [wipList,setWIPList] = useState(
+    ()=>{
+      const list = window.localStorage.getItem('wipList')
+      console.log({list})
+      if (list) return new Map(JSON.parse(list))
+      return new Map()
+    }
+  )
+
+  const [currentWIP,setCurrentWIP] = useState(
+    ()=>{
+      const wip = window.localStorage.getItem('currentWIP')
+      if (wip) return JSON.parse(wip)
+      return ""
+    }
+  )
+
   const [lyricsInfo,setLyricsInfo] = useState(
     ()=>{
-      const lyricsFromStorage = window.localStorage.getItem('currentLyrics')
-      console.log({lyricsFromStorage})
-      if (lyricsFromStorage) return new Map(JSON.parse(lyricsFromStorage))
+      if (currentWIP){
+        const lyricsFromStorage = window.localStorage.getItem(`lyrics_${currentWIP}`)
+        console.log({lyricsFromStorage})
+        if (lyricsFromStorage) return new Map(JSON.parse(lyricsFromStorage))
+      }
       return new Map()
     }
   )
 
   const [fullTrackName,setFullTrackName] = useState(
     ()=>{
-      const fullTrackNameFromStorage = window.localStorage.getItem('currentTrackName')
-      console.log({fullTrackNameFromStorage})
-      if (fullTrackNameFromStorage) return JSON.parse(fullTrackNameFromStorage)
+      if (currentWIP){
+        const fullTrackNameFromStorage = window.localStorage.getItem(`trackName_${currentWIP}`)
+        console.log({fullTrackNameFromStorage})
+        if (fullTrackNameFromStorage) return JSON.parse(fullTrackNameFromStorage)
+      }
       return { artistName: null, trackName: null }
+    }
+  )
+
+  const [wipTittle,setWIPTittle] = useState(
+    ()=>{
+      if (currentWIP){
+        const tittle = window.localStorage.getItem(`tittle_${currentWIP}`)
+        console.log({tittle})
+        if (tittle) return JSON.parse(tittle)
+      }
+      return ""
     }
   )
 
@@ -37,26 +69,67 @@ function App() {
   const abortControllerRef = useRef(null)
 
   useEffect(()=>{
+    if (!currentWIP) return
     const currentLyrics = Array.from(lyricsInfo.entries())
-    window.localStorage.setItem('currentLyrics',JSON.stringify(currentLyrics))
+    window.localStorage.setItem(`lyrics_${currentWIP}`,JSON.stringify(currentLyrics))
   },[lyricsInfo])
 
   useEffect(()=>{
-    window.localStorage.setItem('currentTrackName',JSON.stringify(fullTrackName))
+    if (!currentWIP) return
+    window.localStorage.setItem(`trackName_${currentWIP}`,JSON.stringify(fullTrackName))
   },[fullTrackName])
 
-  const resetApp = ()=>{
+  useEffect(()=>{
+    if (!currentWIP) return
+    window.localStorage.setItem(`tittle_${currentWIP}`,JSON.stringify(wipTittle))
+
+    const newWipList = wipList
+    newWipList.set(currentWIP, wipTittle)
+    console.log({newWipList})
+    setWIPList(newWipList)
+    window.localStorage.setItem(`wipList`,JSON.stringify(Array.from(newWipList.entries())))
+  },[wipTittle])
+
+  const newItem = ()=>{
     console.log('DISCARD')
-    window.localStorage.removeItem('currentLyrics')
-    window.localStorage.removeItem('currentTrackName')
+    // window.localStorage.removeItem('currentLyrics')
+    // window.localStorage.removeItem('currentTrackName')
+
+    setCurrentWIP("")
+    setWIPTittle("")
     setFullTrackName({artistName:null,trackName:null})
     setLyricsInfo(new Map())
   }
 
+  const deleteFromStorage = (wip)=>{
+    window.localStorage.removeItem(`lyrics_${wip}`)
+    window.localStorage.removeItem(`trackName_${wip}`)
+    window.localStorage.removeItem(`tittle_${wip}`)
+  }
+
   const setFromFetch = (index)=>{
+    let newWipList = wipList
+
+    if(newWipList.size === 10){
+      const lastkey = newWipList.keys().next().value
+      deleteFromStorage(lastkey)
+      newWipList.delete(lastkey)
+    }
+
+    const newCurrentWIP = Date.now()
     const {artistName, trackName, lyrics} = getResultFromIndex(response,index)
+    const newTittle = `${artistName?.[0]} - ${trackName}`
+
+    newWipList.set(newCurrentWIP, newTittle)
+    console.log({newWipList,newCurrentWIP})
+    setWIPList(newWipList)
+    setCurrentWIP(newCurrentWIP)
+    window.localStorage.setItem(`currentWIP`,JSON.stringify(newCurrentWIP))
+    window.localStorage.setItem(`wipList`,JSON.stringify(Array.from(newWipList.entries())))
+    setWIPTittle(newTittle)
     setFullTrackName({artistName,trackName})
     setLyricsInfo(lyrics)
+
     console.log(lyrics)
     console.time('RENDER')
   }
@@ -101,14 +174,32 @@ function App() {
     )
   }, [])
 
+  const setFromStorageItem = (item)=>{
+    setCurrentWIP(item)
+
+    console.log(wipList.size)
+
+    const lyricsFromStorage = window.localStorage.getItem(`lyrics_${item}`)
+    setLyricsInfo(new Map(JSON.parse(lyricsFromStorage)))
+
+    const fullTrackNameFromStorage = window.localStorage.getItem(`trackName_${item}`)
+    setFullTrackName(JSON.parse(fullTrackNameFromStorage))
+
+    const tittle = window.localStorage.getItem(`tittle_${item}`)
+    setWIPTittle(JSON.parse(tittle))
+  }
+
   return (
     <>
       <Layout
         fetchLyrics={fetchLyrics}
-        fullTrackName={fullTrackName}
-        discard={resetApp}
+        wipTittle={wipTittle}
+        setWIPTittle={setWIPTittle}
+        discard={newItem}
         response={response}
         setFromFetch={setFromFetch}
+        wipList={wipList}
+        setFromStorageItem={setFromStorageItem}
       >
         <Box width={'55dvw'}>
           <Box>

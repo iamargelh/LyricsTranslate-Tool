@@ -6,8 +6,8 @@ import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import { useDebounce } from '../../hooks/useDebounce'
 
-export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawerWidth,query,setQuery, response, setFromFetch}){
-  const [tittle,setTittle] = useState('Untitled')
+export function TopBar ({drawerOpen,toggleDrawerOpen,wipTittle,setWIPTittle,discard,drawerWidth,query,setQuery, response, setFromFetch}){
+  const [tittle,setTittle] = useState(wipTittle??'Untitled')
   const [search, setSearch] = useState('')
   const [isSearchBlank,setIsSearchBlank] = useState(true)
   const [searchFocus, setSearchFocus] = useState(false)
@@ -16,14 +16,9 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
 
   useEffect(()=>{
     setIsSearching(false)
-    const artistName = fullTrackName?.artistName?.[0] ?? false
-    if (!artistName) {
-      setTittle('Untitled')
-      return
-    }
-    const newTittle = `${artistName} - ${fullTrackName.trackName}`
-    setTittle(newTittle)
-  },[fullTrackName])
+    if (!wipTittle) setTittle('Untitled')
+    else setTittle(wipTittle)
+  },[wipTittle])
 
   useEffect(()=>{
     setIsSearching(false)
@@ -38,6 +33,10 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
 
   const handleTittleChange = (event)=>{
     setTittle(event.target.value)
+  }
+
+  const handleOnBlur = ()=>{
+    setWIPTittle(tittle)
   }
 
   const handleDiscard = ()=>{
@@ -139,6 +138,7 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,fullTrackName,discard,drawe
                 }
                 fullWidth
                 onChange={handleTittleChange}
+                onBlur={handleOnBlur}
                 variant='outlined'
                 value={tittle}
                 key={'TRACKNAME'}

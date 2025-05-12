@@ -13,9 +13,17 @@ import { BottomBar, TopBar } from './Layout/LayoutBar'
 
 const drawerWidth = 270
 
-export function Layout({ discard, fetchLyrics, fullTrackName, children, response, setFromFetch }) {
-  // no sync: tristam different
-  // sync: eden take care
+export function Layout({
+  discard,
+  fetchLyrics,
+  wipTittle,
+  setWIPTittle,
+  children,
+  response,
+  setFromFetch,
+  wipList,
+  setFromStorageItem }) {
+
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [query, setQuery] = useState('')
 
@@ -27,13 +35,13 @@ export function Layout({ discard, fetchLyrics, fullTrackName, children, response
     setDrawerOpen(!drawerOpen)
   }
 
-
   return (
     <>
       <TopBar
         drawerOpen={drawerOpen}
         toggleDrawerOpen={toggleDrawerOpen}
-        fullTrackName={fullTrackName}
+        wipTittle={wipTittle}
+        setWIPTittle={setWIPTittle}
         discard={discard}
         drawerWidth={drawerWidth}
         query={query}
@@ -47,11 +55,27 @@ export function Layout({ discard, fetchLyrics, fullTrackName, children, response
         drawerWidth={drawerWidth}
       >
         <List>
-          <ListItem key='wipItem' disablePadding>
+          {
+            wipList &&
+            [...wipList].toReversed().map(([key, content])=>{
+              const onClick = ()=>{
+                setFromStorageItem(key)
+                toggleDrawerOpen()
+              }
+              return(
+                <ListItem key={`wipItem_${key}`} disablePadding>
+                  <ListItemButton>
+                    <ListItemText primary={content} onClick={onClick} />
+                  </ListItemButton>
+                </ListItem>
+              )
+            })
+          }
+          {/* <ListItem key='wipItem' disablePadding>
             <ListItemButton>
               <ListItemText primary={`Work in Progress`} />
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
         </List>
       </AppDrawer>
 
