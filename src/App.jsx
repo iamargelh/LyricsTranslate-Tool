@@ -83,7 +83,7 @@ function App() {
     if (!currentWIP) return
     window.localStorage.setItem(`tittle_${currentWIP}`,JSON.stringify(wipTittle))
 
-    const newWipList = wipList
+    const newWipList = new Map(wipList)
     newWipList.set(currentWIP, wipTittle)
     console.log({newWipList})
     setWIPList(newWipList)

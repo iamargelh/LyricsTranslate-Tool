@@ -1,7 +1,7 @@
 import { styled, Toolbar, Box, ToggleButtonGroup, ToggleButton, Button, IconButton, TextField, Input, Autocomplete, Card, CardActionArea, CardContent, Typography, CircularProgress } from '@mui/material'
 import MuiAppBar from '@mui/material/AppBar'
 import { useEffect, useState } from 'react'
-import { Save, DeleteOutline } from '@mui/icons-material'
+import { Save, DeleteOutline, NoteAddOutlined } from '@mui/icons-material'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import { useDebounce } from '../../hooks/useDebounce'
@@ -201,8 +201,8 @@ export function TopBar ({drawerOpen,toggleDrawerOpen,wipTittle,setWIPTittle,disc
             alignItems:'center',
             justifyContent:'center'
           }}>
-            <Button variant='contained' color='error' startIcon={<DeleteOutline/>} onClick={handleDiscard}>
-              <b>Discard</b>
+            <Button variant='contained' color='primary' startIcon={<NoteAddOutlined sx={{marginTop:"-2px"}}/>} onClick={handleDiscard}>
+              <b>New Project</b>
             </Button>
           </Box>
         </Box>
