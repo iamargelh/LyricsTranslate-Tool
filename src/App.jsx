@@ -99,6 +99,7 @@ function App() {
     setWIPTittle("")
     setFullTrackName({artistName:null,trackName:null})
     setLyricsInfo(new Map())
+    window.localStorage.removeItem('currentWIP')
   }
 
   const deleteFromStorage = (wip)=>{
@@ -189,6 +190,18 @@ function App() {
     setWIPTittle(JSON.parse(tittle))
   }
 
+  const deleteFromStorageItem = (item)=>{
+
+    if (item===currentWIP) {
+      newItem()
+    }
+    let newWipList = new Map(wipList)
+    newWipList.delete(item)
+    window.localStorage.setItem(`wipList`,JSON.stringify(Array.from(newWipList.entries())))
+    deleteFromStorage(item)
+    setWIPList(newWipList)
+  }
+
   return (
     <>
       <Layout
@@ -200,6 +213,7 @@ function App() {
         setFromFetch={setFromFetch}
         wipList={wipList}
         setFromStorageItem={setFromStorageItem}
+        deleteFromStorageItem={deleteFromStorageItem}
       >
         <Box width={'55dvw'}>
           <Box>

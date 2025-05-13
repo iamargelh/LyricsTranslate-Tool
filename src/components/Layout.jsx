@@ -1,4 +1,5 @@
 import {
+  IconButton,
   List,
   ListItem,
   ListItemButton,
@@ -9,6 +10,7 @@ import MuiAppBar from '@mui/material/AppBar'
 import { useState, useEffect } from 'react'
 import { AppDrawer } from './AppDrawer'
 import { BottomBar, TopBar } from './Layout/LayoutBar'
+import { DeleteForeverOutlined } from '@mui/icons-material'
 
 
 const drawerWidth = 270
@@ -22,7 +24,9 @@ export function Layout({
   response,
   setFromFetch,
   wipList,
-  setFromStorageItem }) {
+  setFromStorageItem,
+  deleteFromStorageItem
+  }) {
 
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -58,14 +62,24 @@ export function Layout({
           {
             wipList &&
             [...wipList].toReversed().map(([key, content])=>{
-              const onClick = ()=>{
+              const listOnClick = ()=>{
                 setFromStorageItem(key)
                 toggleDrawerOpen()
+              }
+              const deleteOnClick = ()=>{
+                // setFromStorageItem(key)
+                deleteFromStorageItem(key)
+                console.log(`DELETE ${key}`)
               }
               return(
                 <ListItem key={`wipItem_${key}`} disablePadding>
                   <ListItemButton>
-                    <ListItemText primary={content} onClick={onClick} />
+                    <ListItemText primary={content} onClick={listOnClick} />
+                    <IconButton onClick={deleteOnClick}>
+                      <DeleteForeverOutlined
+                        color='error'
+                      />
+                    </IconButton>
                   </ListItemButton>
                 </ListItem>
               )
