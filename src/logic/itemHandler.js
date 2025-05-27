@@ -10,3 +10,15 @@ export function getFromStorage (id){
 
     return {tittle,fullTrackName,lyrics}
 }
+
+export function deleteFromStorage (id, wipList) {
+    let newWipList = new Map(wipList)
+    newWipList.delete(id)
+    window.localStorage.setItem(`wipList`,JSON.stringify(Array.from(newWipList.entries())))
+
+    window.localStorage.removeItem(`lyrics_${id}`)
+    window.localStorage.removeItem(`trackName_${id}`)
+    window.localStorage.removeItem(`tittle_${id}`)
+
+    return newWipList
+}

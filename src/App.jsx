@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import { Layout } from './components/Layout.jsx'
 import { LyricsTable, LyricsRow, LyricsCell } from './components/LyricsTable.jsx'
-import { getFromStorage } from './logic/itemHandler.js'
+import { getFromStorage, deleteFromStorage } from './logic/itemHandler.js'
 
 function App() {
   const [wipList,setWIPList] = useState(
@@ -71,7 +71,7 @@ function App() {
       if (currentWIP){
         const tittle = window.localStorage.getItem(`tittle_${currentWIP}`)
         console.log({tittle})
-        if (tittle) return JSON.parse(tittle)
+        if (tittle) return tittle
       }
       return ""
     }
@@ -93,8 +93,6 @@ function App() {
 
   const newItem = ()=>{
     console.log('DISCARD')
-    // window.localStorage.removeItem('currentLyrics')
-    // window.localStorage.removeItem('currentTrackName')
 
     setCurrentWIP("")
     setWIPTittle("")
@@ -103,11 +101,7 @@ function App() {
     window.localStorage.removeItem('currentWIP')
   }
 
-  const deleteFromStorage = (wip)=>{
-    window.localStorage.removeItem(`lyrics_${wip}`)
-    window.localStorage.removeItem(`trackName_${wip}`)
-    window.localStorage.removeItem(`tittle_${wip}`)
-  }
+
 
   const setFromFetch = (index)=>{
     let newWipList = wipList
@@ -177,33 +171,25 @@ function App() {
   }, [])
 
   const setFromStorageItem = (item)=>{
-
     if (currentWIP===item) return
 
-    const {tittle:newTittle,fullTrackName:newFullTrackName,lyrics:newLyrics} = getFromStorage(item)
-
-    console.log({newTittle})
-
-    setCurrentWIP(item)
-
-    console.log(wipList.size)
+    const {
+      tittle:newTittle,
+      fullTrackName:newFullTrackName,
+      lyrics:newLyrics
+    } = getFromStorage(item)
 
     setLyricsInfo(newLyrics)
     setFullTrackName(newFullTrackName)
     setWIPTittle(newTittle)
 
+    setCurrentWIP(item)
     window.localStorage.setItem(`currentWIP`,JSON.stringify(item))
   }
 
-  const deleteFromStorageItem = (item)=>{
-
-    if (item===currentWIP) {
-      newItem()
-    }
-    let newWipList = new Map(wipList)
-    newWipList.delete(item)
-    window.localStorage.setItem(`wipList`,JSON.stringify(Array.from(newWipList.entries())))
-    deleteFromStorage(item)
+  const deleteItemFromStorage = (item)=>{
+    if (item===currentWIP) newItem()
+    const newWipList = deleteFromStorage(item,wipList)
     setWIPList(newWipList)
   }
 
@@ -218,7 +204,7 @@ function App() {
         setFromFetch={setFromFetch}
         wipList={wipList}
         setFromStorageItem={setFromStorageItem}
-        deleteFromStorageItem={deleteFromStorageItem}
+        deleteFromStorageItem={deleteItemFromStorage}
       >
         <Box width={'55dvw'}>
           <Box>
